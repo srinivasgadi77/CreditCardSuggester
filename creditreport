@@ -1,0 +1,67 @@
+import  pandas as pd
+import pdb
+data = {
+'AMEX' : 5,
+'CITI':12,
+'HDFC':18,
+'ICICI':25,
+'SBI':16,
+'RBL':3,
+'SC' : 25,
+}
+
+RghtcardByDate = {}
+END=6
+
+def get_range(start,end):
+    return  [ date for date in range(start,end)]
+
+for card,rng in data.items():
+    date_range = get_range(rng,rng+END)
+    for date in range(1, 32):
+
+        if date in date_range:
+            if date in RghtcardByDate.keys():
+                RghtcardByDate[date].append(card)
+            else:
+                RghtcardByDate[date] = [card]
+
+for date in  range(1, 32):
+    if not date in RghtcardByDate.keys():
+        RghtcardByDate[date] = []
+
+print(f'RghtcardByDate : {RghtcardByDate}')
+
+t= {}
+for date,cards in RghtcardByDate.items():
+            print(RghtcardByDate)
+            i=0
+
+            while len(cards) < 2:
+                print('TRUE')
+                i +=1
+                print(date)
+                for card,rng in data.items():
+
+                        if len(cards) == 1  and  card == cards[0]:
+                            continue
+
+                        start=rng
+                        end =  rng+END+i
+                        if end > 31:
+                            start = 1
+                            end = start + i
+                        print( card, get_range(start,end))
+                        if date in get_range(start,end):
+                            if date in RghtcardByDate.keys():
+                                RghtcardByDate[date].append(card)
+                            else:
+                                RghtcardByDate[date] = [card]
+                            if date in t.keys():
+                                t[date].append(card)
+                            else:
+                                t[date] = [card]
+
+df = pd.DataFrame.from_dict(RghtcardByDate,orient='index')
+df.sort_index().T.to_csv(r'C:\Users\srgadi.ORADEV\Desktop\cards_usage2.csv')
+
